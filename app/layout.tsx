@@ -1,10 +1,11 @@
+
 import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Արև Իվենթ | Միջոցառումների Կազմակերպում",
   description:
-    "Արև Իվենթ — միջոցառումների կազմակերպում, պլանավորում և յուրահատուկ գաղափարների իրականացում։",
+    "Արև Իվենթ — միջոցառումների կազմակերպում, պլանավորում, մասնագետների ընտրություն և յուրահատուկ գաղափարների իրականացում։",
 };
 
 export default function RootLayout({
