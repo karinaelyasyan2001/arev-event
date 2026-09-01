@@ -1,11 +1,11 @@
-
 type LocationStepProps = {
   selectedLocation: string;
+  customLocation: string;
   onSelectLocation: (location: string) => void;
+  onChangeCustomLocation: (value: string) => void;
   onNext: () => void;
   onBack: () => void;
 };
-
 const locationTypes = [
   {
     id: "hall",
@@ -59,7 +59,9 @@ const locationTypes = [
 
 export default function LocationStep({
   selectedLocation,
+  customLocation,
   onSelectLocation,
+  onChangeCustomLocation,
   onNext,
   onBack,
 }: LocationStepProps) {
@@ -143,11 +145,15 @@ export default function LocationStep({
           Եթե արդեն գիտես վայրի անունը, գրիր այստեղ։
         </p>
 
-        <input
-          type="text"
-          placeholder="Օրինակ՝ Dvin Music Hall"
-          className="mt-5 w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none transition focus:border-[#f28c28]"
-        />
+      <input
+  type="text"
+  value={customLocation}
+  onChange={(event) =>
+    onChangeCustomLocation(event.target.value)
+  }
+  placeholder="Օրինակ՝ Dvin Music Hall"
+  className="mt-5 w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none transition focus:border-[#f28c28]"
+/>
 
       </div>
 

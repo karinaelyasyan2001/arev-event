@@ -1,505 +1,425 @@
-import Header from "@/components/Header";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+
+const services = [
+  {
+    icon: "💍",
+    title: "Հարսանիքներ",
+    text: "Ստեղծում ենք ձեր ամենակարևոր օրվա ամբողջական կոնցեպտը՝ գաղափարից մինչև վերջին մանրուքը։",
+  },
+  {
+    icon: "🎂",
+    title: "Ծննդյան տարեդարձեր",
+    text: "Յուրահատուկ ձևավորում, ժամանց և մթնոլորտ՝ հենց ձեր ցանկություններին համապատասխան։",
+  },
+  {
+    icon: "🏢",
+    title: "Կորպորատիվ միջոցառումներ",
+    text: "Պրոֆեսիոնալ միջոցառումներ ընկերությունների, թիմերի և բրենդների համար։",
+  },
+  {
+    icon: "✨",
+    title: "Հատուկ միջոցառումներ",
+    text: "Նշանադրություն, առաջարկություն, ավարտական, մանկական և ցանկացած այլ առիթ։",
+  },
+];
+
+const advantages = [
+  {
+    number: "01",
+    title: "Մեկ թիմ",
+    text: "Ձեր միջոցառման բոլոր կարևոր փուլերը կազմակերպում է մեկ միասնական թիմ։",
+  },
+  {
+    number: "02",
+    title: "Ընտրված մասնագետներ",
+    text: "Գտեք լուսանկարիչների, DJ-ների, հաղորդավարների, դիզայներների և այլ մասնագետների։",
+  },
+  {
+    number: "03",
+    title: "Անհատական մոտեցում",
+    text: "Յուրաքանչյուր միջոցառում կառուցվում է հենց ձեր պատմության, ոճի և բյուջեի շուրջ։",
+  },
+];
+
+const steps = [
+  {
+    number: "01",
+    title: "Պատմեք ձեր գաղափարը",
+    text: "Պատասխանեք մի քանի պարզ հարցի մեր Event Planner-ում։",
+  },
+  {
+    number: "02",
+    title: "Ստացեք ձեր պլանը",
+    text: "Մենք հավաքում ենք ձեր միջոցառման հիմնական կառուցվածքը։",
+  },
+  {
+    number: "03",
+    title: "Մենք կազմակերպում ենք",
+    text: "Մեր թիմը հոգում է մնացածի մասին, որպեսզի դուք վայելեք օրը։",
+  },
+];
+
+export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#fffaf2] text-[#252525]">
-      {/* =========================
-          HEADER
-      ========================== */}
-      <Header />
-
-      {/* =========================
-          HERO
-      ========================== */}
-      <section className="mx-auto flex min-h-[80vh] max-w-7xl items-center px-6 py-20">
-        <div className="max-w-4xl">
-          <p className="mb-6 text-sm font-semibold uppercase tracking-[0.25em] text-[#f28c28]">
-            AREV EVENT
-          </p>
-
-          <h1 className="text-5xl font-bold leading-tight tracking-tight sm:text-6xl lg:text-8xl">
-            Քո առիթը։
-            <br />
-            Քո գաղափարը։
-            <br />
-            <span className="text-[#f28c28]">
-              Մեր ամբողջ թիմը։
-            </span>
-          </h1>
-
-          <p className="mt-8 max-w-2xl text-lg leading-8 text-[#555] sm:text-xl">
-            Միջոցառումների կազմակերպում, պլանավորում և
-            ստեղծագործական լուծումներ՝ ամեն ինչ մեկ վայրում։
-          </p>
-
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <a
-              href="/planner"
-              className="rounded-full bg-[#f28c28] px-8 py-4 text-center font-semibold text-white transition hover:scale-[1.02] hover:bg-[#df7817]"
-            >
-              Սկսել իմ միջոցառումը ☀️
-            </a>
-
-            <a
-              href="#services"
-              className="rounded-full border border-[#252525]/15 px-8 py-4 text-center font-semibold transition hover:bg-white"
-            >
-              Ուսումնասիրել Արևը
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================
-          EVENTS
-      ========================== */}
+    <main className="overflow-hidden bg-[#fffaf2] text-[#1f1f1f]">
+      {/* HERO */}
       <section
-        id="events"
-        className="mx-auto max-w-7xl px-6 py-24"
+        id="home"
+        className="relative flex min-h-[calc(100vh-76px)] items-center"
       >
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#f28c28]">
-            ՔՈ ԱՌԻԹԸ
-          </p>
-
-          <h2 className="mt-4 text-4xl font-bold sm:text-5xl">
-            Ամեն առիթի համար՝ իր Արևը։
-          </h2>
-
-          <p className="mt-5 text-lg leading-8 text-[#666]">
-            Մենք չենք սահմանափակվում մեկ տեսակի միջոցառմամբ։
-            Ընտրիր քո առիթը և սկսիր ստեղծել այն։
-          </p>
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute -left-32 top-20 h-72 w-72 rounded-full bg-orange-300/20 blur-3xl" />
+          <div className="absolute right-0 top-10 h-96 w-96 rounded-full bg-yellow-300/20 blur-3xl" />
+          <div className="absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-orange-200/20 blur-3xl" />
         </div>
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Wedding */}
-          <a
-            href="/events/wedding"
-            className="rounded-3xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-          >
-            <div className="text-4xl">💍</div>
+        <div className="mx-auto grid w-[min(1180px,calc(100%-32px))] items-center gap-12 py-20 lg:grid-cols-[1.05fr_.95fr]">
+          <div className="arev-fade-up">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-4 py-2 text-sm font-semibold shadow-sm backdrop-blur">
+              <span className="text-orange-500">✦</span>
+              Ձեր օրը։ Ձեր պատմությունը։ Ձեր Արևը։
+            </div>
 
-            <h3 className="mt-5 text-xl font-bold">
-              Հարսանիք
-            </h3>
+            <h1 className="max-w-4xl text-5xl font-black leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl">
+              Մենք ստեղծում ենք
+              <span className="arev-gradient-text block">
+                հիշողություններ։
+              </span>
+            </h1>
 
-            <p className="mt-2 text-sm text-[#777]">
-              Ստեղծիր ձեր պատմությանը համապատասխան մեծ օրը։
+            <p className="mt-7 max-w-2xl text-base leading-8 text-neutral-600 sm:text-lg">
+              «Արև Իվենթ»-ը միջոցառումների կազմակերպման նոր սերունդ է։
+              Գաղափարից մինչև իրականացում՝ մենք հավաքում ենք ճիշտ մարդկանց,
+              ճիշտ ծառայությունները և ստեղծում ձեր միջոցառման ամբողջական
+              պատմությունը։
             </p>
 
-            <span className="mt-6 block text-sm font-semibold text-[#f28c28]">
-              Բացել →
-            </span>
-          </a>
-
-          {/* Birthday */}
-          <a
-            href="/events/birthday"
-            className="rounded-3xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-          >
-            <div className="text-4xl">🎂</div>
-
-            <h3 className="mt-5 text-xl font-bold">
-              Ծնունդ
-            </h3>
-
-            <p className="mt-2 text-sm text-[#777]">
-              Ծնունդ, որը երկար կհիշվի։
-            </p>
-
-            <span className="mt-6 block text-sm font-semibold text-[#f28c28]">
-              Բացել →
-            </span>
-          </a>
-
-          {/* Engagement */}
-          <a
-            href="/events/engagement"
-            className="rounded-3xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-          >
-            <div className="text-4xl">💫</div>
-
-            <h3 className="mt-5 text-xl font-bold">
-              Նշանադրություն
-            </h3>
-
-            <p className="mt-2 text-sm text-[#777]">
-              Ջերմ և յուրահատուկ սկիզբ ձեր պատմության համար։
-            </p>
-
-            <span className="mt-6 block text-sm font-semibold text-[#f28c28]">
-              Բացել →
-            </span>
-          </a>
-
-          {/* Corporate */}
-          <a
-            href="/events/corporate"
-            className="rounded-3xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-          >
-            <div className="text-4xl">🏢</div>
-
-            <h3 className="mt-5 text-xl font-bold">
-              Կորպորատիվ
-            </h3>
-
-            <p className="mt-2 text-sm text-[#777]">
-              Թիմային և բիզնես միջոցառումներ՝ նոր մակարդակով։
-            </p>
-
-            <span className="mt-6 block text-sm font-semibold text-[#f28c28]">
-              Բացել →
-            </span>
-          </a>
-        </div>
-
-        {/* More events */}
-        <div className="mt-8 text-center">
-          <a
-            href="/events"
-            className="inline-block rounded-full border border-black/10 bg-white px-7 py-3 font-semibold transition hover:bg-black hover:text-white"
-          >
-            Դիտել բոլոր միջոցառումները →
-          </a>
-        </div>
-      </section>
-
-      {/* =========================
-          SERVICES
-      ========================== */}
-      <section
-        id="services"
-        className="bg-white"
-      >
-        <div className="mx-auto max-w-7xl px-6 py-24">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#f28c28]">
-            ԱՐԵՎ ԻՎԵՆԹ
-          </p>
-
-          <h2 className="mt-4 max-w-3xl text-4xl font-bold sm:text-5xl">
-            Մենք պարզապես միջոցառում չենք կազմակերպում։
-          </h2>
-
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-[#666]">
-            Մենք ստեղծել ենք ամբողջական համակարգ, որտեղ միջոցառումը
-            կարող ես վստահել մեր թիմին կամ քայլ առ քայլ ստեղծել
-            ինքնուրույն՝ օգտագործելով Արև Իվենթ-ի գործիքներն ու
-            մասնագետների հարթակը։
-          </p>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {/* Service 1 */}
-            <div className="rounded-3xl bg-[#fffaf2] p-8">
-              <div className="text-4xl">☀️</div>
-
-              <h3 className="mt-5 text-2xl font-bold">
-                Ամբողջական կազմակերպում
-              </h3>
-
-              <p className="mt-4 leading-7 text-[#666]">
-                Մեր ամբողջ թիմը քո կողքին է սկզբից մինչև վերջ։
-                Մենք մտածում ենք գաղափարի, պլանավորման, մասնագետների,
-                դեկորի, ժամանցի և մյուս մանրուքների մասին՝ նույնիսկ
-                այն բաների, որոնց մասին դու դեռ չես մտածել։
-              </p>
-
-              <a
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link
                 href="/planner"
-                className="mt-6 inline-block font-semibold text-[#f28c28]"
+                className="arev-button min-h-14 px-8 text-base"
               >
-                Սկսել կազմակերպումը →
-              </a>
+                Կազմակերպել միջոցառում →
+              </Link>
+
+              <Link
+                href="#services"
+                className="arev-button arev-button-secondary min-h-14 px-8 text-base"
+              >
+                Դիտել ծառայությունները
+              </Link>
             </div>
 
-            {/* Service 2 */}
-            <div className="rounded-3xl bg-[#fffaf2] p-8">
-              <div className="text-4xl">🤝</div>
+            <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-neutral-500">
+              <span>✓ Անհատական մոտեցում</span>
+              <span>✓ Փորձառու թիմ</span>
+              <span>✓ Ամբողջական կազմակերպում</span>
+            </div>
+          </div>
 
-              <h3 className="mt-5 text-2xl font-bold">
-                Մասնագետների հարթակ
-              </h3>
+          <div className="relative hidden min-h-[540px] lg:block">
+            <div className="absolute right-5 top-8 h-[430px] w-[390px] rotate-3 rounded-[44px] bg-gradient-to-br from-orange-300 via-orange-200 to-yellow-100 shadow-[0_35px_100px_rgba(242,140,40,.2)]" />
 
-              <p className="mt-4 leading-7 text-[#666]">
-                Ընտրիր մասնագետներին ինքնուրույն։ Դիտիր նրանց
-                պորտֆոլիոները, աշխատանքները, ծառայությունները,
-                տեղեկությունները, ազատ օրերը և անհրաժեշտության
-                դեպքում կապ հաստատիր նրանց հետ։
-              </p>
+            <div className="absolute right-12 top-16 flex h-[430px] w-[390px] -rotate-3 flex-col justify-between overflow-hidden rounded-[44px] border border-white/80 bg-white p-8 shadow-[0_30px_80px_rgba(31,31,31,.12)]">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-[0.25em] text-orange-500">
+                    AREV EVENT
+                  </div>
+                  <div className="mt-2 text-2xl font-black">
+                    Your moment.
+                  </div>
+                </div>
 
-              <a
-                href="#partners"
-                className="mt-6 inline-block font-semibold text-[#f28c28]"
-              >
-                Ուսումնասիրել մասնագետներին →
-              </a>
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-50 text-xl">
+                  ☀️
+                </div>
+              </div>
+
+              <div className="text-center">
+                <div className="text-8xl">✨</div>
+                <div className="mt-5 text-3xl font-black">
+                  Make it
+                  <br />
+                  unforgettable.
+                </div>
+              </div>
+
+              <div className="flex items-end justify-between">
+                <div>
+                  <div className="text-xs text-neutral-400">EVENT PLANNING</div>
+                  <div className="mt-1 font-bold">From idea to memory</div>
+                </div>
+
+                <div className="text-4xl">☀</div>
+              </div>
             </div>
 
-            {/* Service 3 */}
-            <div className="rounded-3xl bg-[#fffaf2] p-8">
-              <div className="text-4xl">📝</div>
-
-              <h3 className="mt-5 text-2xl font-bold">
-                Arev Notebook
-              </h3>
-
-              <p className="mt-4 leading-7 text-[#666]">
-                Քո թվային նոթատետրը՝ մեկ վայրում պահելու համար
-                հյուրերի ցանկը, գաղափարները, dress code-ը,
-                սեղանների դասավորությունը, կարևոր նշումները,
-                հղումները և միջոցառման մյուս մանրամասները։
-              </p>
-
-              <a
-                href="/notebook"
-                className="mt-6 inline-block font-semibold text-[#f28c28]"
-              >
-                Բացել Notebook-ը →
-              </a>
-            </div>
-
-            {/* Service 4 */}
-            <div className="rounded-3xl bg-[#fffaf2] p-8">
-              <div className="text-4xl">🎨</div>
-
-              <h3 className="mt-5 text-2xl font-bold">
-                Ստեղծիր քո դեկորը
-              </h3>
-
-              <p className="mt-4 leading-7 text-[#666]">
-                Պատկերացրու քո ֆոտոզոնան կամ դեկորը, ավելացրու
-                ու հեռացրու տարրեր, փորձիր տարբեր գաղափարներ
-                և տես՝ ինչպիսի տեսք կունենա վերջնական տարբերակը։
-              </p>
-
-              <a
-                href="/designer"
-                className="mt-6 inline-block font-semibold text-[#f28c28]"
-              >
-                Ստեղծել դեկոր →
-              </a>
+            <div className="arev-float absolute bottom-5 left-0 rounded-3xl border border-white bg-white/95 p-5 shadow-xl backdrop-blur">
+              <div className="text-xs font-semibold text-neutral-400">
+                YOUR EVENT
+              </div>
+              <div className="mt-1 font-bold">Starts here ✦</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* =========================
-          PLANNER
-      ========================== */}
-      <section
-        id="tools"
-        className="mx-auto max-w-7xl px-6 py-24"
-      >
-        <div className="rounded-[2rem] bg-[#252525] px-8 py-16 text-white sm:px-14">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#f28c28]">
-            AREV PLANNER
-          </p>
+      {/* ABOUT */}
+      <section id="about" className="arev-section bg-white">
+        <div className="arev-container">
+          <div className="grid gap-14 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+            <div>
+              <div className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-orange-500">
+                Մեր մասին
+              </div>
 
-          <h2 className="mt-5 max-w-3xl text-4xl font-bold sm:text-6xl">
-            Միայն գաղափա՞ր ունես։
-            <br />
-            Մենք կօգնենք այն կառուցել։
-          </h2>
+              <h2 className="arev-title">
+                Արևը այնտեղ է,
+                <span className="arev-gradient-text block">
+                  որտեղ լավ հիշողություններն են։
+                </span>
+              </h2>
+            </div>
 
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/70">
-            Ընտրիր միջոցառման տեսակը, ամսաթիվը, վայրը,
-            հյուրերի քանակը, բյուջեն, ծառայությունները և ոճը։
-            Վերջում կստանաս քո միջոցառման նախնական պլանը։
-          </p>
+            <div>
+              <p className="text-lg leading-8 text-neutral-600">
+                «Արև Իվենթ»-ը ստեղծվել է մի պարզ գաղափարով՝ միջոցառումների
+                կազմակերպումը դարձնել ավելի հեշտ, գեղեցիկ և վստահելի։
+              </p>
 
-          <a
-            href="/planner"
-            className="mt-10 inline-block rounded-full bg-[#f28c28] px-8 py-4 font-semibold text-white transition hover:bg-[#df7817]"
-          >
-            Սկսել Planner-ը ☀️
-          </a>
-        </div>
-      </section>
+              <p className="mt-5 leading-7 text-neutral-500">
+                Դուք կարող եք մեզ վստահել ամբողջ միջոցառումը կամ օգտագործել
+                հարթակը՝ անհրաժեշտ մասնագետներին գտնելու, նրանց աշխատանքները
+                դիտելու և ձեր միջոցառման համար ճիշտ թիմ հավաքելու համար։
+              </p>
 
-      {/* =========================
-          KNOWLEDGE
-      ========================== */}
-      <section
-        id="knowledge"
-        className="mx-auto max-w-7xl px-6 py-24"
-      >
-        <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#f28c28]">
-            AREV KNOWLEDGE
-          </p>
-
-          <h2 className="mt-4 text-4xl font-bold sm:text-5xl">
-            Միջոցառման մասին գիտելիքը նույնպես ծառայություն է։
-          </h2>
-
-          <p className="mt-6 text-lg leading-8 text-[#666]">
-            Այստեղ մարդիկ կարող են սովորել միջոցառումների
-            կազմակերպման կարևոր մանրուքները՝ ինչ ընտրել,
-            ինչից խուսափել, ինչպես պլանավորել բյուջեն,
-            ինչպես ընտրել մասնագետներին և ինչ բաների մասին
-            մարդիկ սովորաբար մոռանում են։
-          </p>
-
-          <a
-            href="/knowledge"
-            className="mt-8 inline-block rounded-full bg-[#252525] px-7 py-3 font-semibold text-white transition hover:bg-[#f28c28]"
-          >
-            Բացել գիտելիքի բաժինը →
-          </a>
-        </div>
-      </section>
-
-      {/* =========================
-          PARTNERS
-      ========================== */}
-      <section
-        id="partners"
-        className="bg-[#fff3e3]"
-      >
-        <div className="mx-auto max-w-7xl px-6 py-24">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#f28c28]">
-            AREV PARTNERS
-          </p>
-
-          <h2 className="mt-4 text-4xl font-bold sm:text-5xl">
-            Մասնագետներ, որոնց կարող ես վստահել։
-          </h2>
-
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-[#666]">
-            Լուսանկարիչներ, դեկորատորներ, DJ-ներ, հաղորդավարներ,
-            երաժիշտներ, դիմահարդարներ և միջոցառման մյուս մասնագետները
-            կարող են ունենալ իրենց անհատական պորտֆոլիոն Արև Իվենթ-ի
-            հարթակում։
-          </p>
-
-          <div className="mt-10">
-            <a
-              href="/partners"
-              className="inline-block rounded-full bg-[#f28c28] px-8 py-4 font-semibold text-white transition hover:bg-[#df7817]"
-            >
-              Գտնել մասնագետ →
-            </a>
+              <Link
+                href="/planner"
+                className="mt-7 inline-flex font-bold text-orange-500 transition hover:text-orange-700"
+              >
+                Սկսել պլանավորումը →
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* =========================
-          AI ASSISTANT
-      ========================== */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
-        <div className="rounded-[2rem] border border-black/10 bg-white p-8 sm:p-12">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#f28c28]">
-            AREV AI
-          </p>
+      {/* SERVICES */}
+      <section id="services" className="arev-section">
+        <div className="arev-container">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-orange-500">
+              Ծառայություններ
+            </div>
 
-          <h2 className="mt-4 max-w-3xl text-4xl font-bold sm:text-5xl">
-            Չգիտե՞ս ինչ անել։
-            <br />
-            Հարցրու Արևի AI-ին։
-          </h2>
-
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#666]">
-            AI օգնականը կարող է օգնել գաղափարների, միջոցառման
-            պլանավորման, դեկորի, հյուրերի, ծառայությունների և
-            այլ հարցերի շուրջ։
-          </p>
-
-          <a
-            href="/ai"
-            className="mt-8 inline-block rounded-full bg-[#252525] px-8 py-4 font-semibold text-white transition hover:bg-[#f28c28]"
-          >
-            Զրուցել Արևի AI-ի հետ ☀️
-          </a>
-        </div>
-      </section>
-
-      {/* =========================
-          LOGIN / ACCOUNT
-      ========================== */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-24">
-          <div className="rounded-[2rem] bg-[#fffaf2] p-8 sm:p-12">
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#f28c28]">
-              AREV ACCOUNT
-            </p>
-
-            <h2 className="mt-4 max-w-3xl text-4xl font-bold sm:text-5xl">
-              Քո միջոցառումները՝ քո անձնական տարածքում։
+            <h2 className="arev-title">
+              Ամեն առիթ ունի
+              <span className="arev-gradient-text"> իր Արևը։</span>
             </h2>
 
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#666]">
-              Ստեղծիր հաշիվ, պահպանիր Planner-ի տվյալները,
-              Notebook-ի գրառումները, ընտրված մասնագետներին,
-              գաղափարները և քո միջոցառման ամբողջ պատմությունը։
+            <p className="arev-subtitle">
+              Անկախ նրանից՝ փոքրիկ ընտանեկան երեկո է, թե մեծ կորպորատիվ
+              միջոցառում, մենք ստեղծում ենք այն ձեր պատկերացրած ձևով։
             </p>
+          </div>
 
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <a
-                href="/login"
-                className="rounded-full bg-[#f28c28] px-8 py-4 text-center font-semibold text-white transition hover:bg-[#df7817]"
+          <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {services.map((service) => (
+              <article
+                key={service.title}
+                className="group rounded-[28px] border border-black/[0.06] bg-white p-7 shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(31,31,31,.1)]"
               >
-                Մուտք գործել
-              </a>
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-50 text-3xl transition duration-300 group-hover:scale-110 group-hover:rotate-3">
+                  {service.icon}
+                </div>
 
-              <a
-                href="/register"
-                className="rounded-full border border-black/10 bg-white px-8 py-4 text-center font-semibold transition hover:bg-black hover:text-white"
-              >
-                Ստեղծել հաշիվ
-              </a>
+                <h3 className="mt-7 text-xl font-black">
+                  {service.title}
+                </h3>
+
+                <p className="mt-4 text-sm leading-7 text-neutral-500">
+                  {service.text}
+                </p>
+
+                <Link
+                  href="/planner"
+                  className="mt-6 inline-flex text-sm font-bold text-orange-500"
+                >
+                  Կազմակերպել →
+                </Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ADVANTAGES */}
+      <section className="arev-section bg-[#1f1f1f] text-white">
+        <div className="arev-container">
+          <div className="grid gap-14 lg:grid-cols-[.8fr_1.2fr]">
+            <div>
+              <div className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-orange-400">
+                Ինչու՞ Արև Իվենթ
+              </div>
+
+              <h2 className="arev-title">
+                Ոչ միայն
+                <span className="block text-orange-400">միջոցառում։</span>
+                Այլ փորձառություն։
+              </h2>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-3">
+              {advantages.map((item) => (
+                <div
+                  key={item.number}
+                  className="rounded-[28px] border border-white/10 bg-white/[0.05] p-6 transition hover:bg-white/[0.08]"
+                >
+                  <div className="text-sm font-black text-orange-400">
+                    {item.number}
+                  </div>
+
+                  <h3 className="mt-10 text-xl font-black">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-4 text-sm leading-7 text-white/60">
+                    {item.text}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* =========================
-          FOOTER
-      ========================== */}
-      <footer className="mx-auto max-w-7xl px-6 py-12">
-        <div className="flex flex-col justify-between gap-6 border-t border-black/10 pt-8 sm:flex-row">
-          <div>
-            <div className="font-bold">
-              ☀️ ԱՐԵՎ ԻՎԵՆԹ
+      {/* HOW IT WORKS */}
+      <section id="how-it-works" className="arev-section bg-white">
+        <div className="arev-container">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-orange-500">
+              Ինչպես է աշխատում
             </div>
 
-            <p className="mt-2 text-sm text-[#777]">
-              Քո առիթը։ Քո գաղափարը։ Մեր ամբողջ թիմը։
+            <h2 className="arev-title">
+              Երեք քայլ դեպի
+              <span className="arev-gradient-text"> ձեր օրը։</span>
+            </h2>
+          </div>
+
+          <div className="relative mt-16 grid gap-8 md:grid-cols-3">
+            {steps.map((step) => (
+              <div key={step.number} className="relative text-center">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-orange-50 text-xl font-black text-orange-500">
+                  {step.number}
+                </div>
+
+                <h3 className="mt-7 text-xl font-black">{step.title}</h3>
+
+                <p className="mx-auto mt-3 max-w-sm text-sm leading-7 text-neutral-500">
+                  {step.text}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-14 text-center">
+            <Link
+              href="/planner"
+              className="arev-button min-h-14 px-10"
+            >
+              Սկսել հիմա →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section id="contact" className="px-4 py-6 sm:px-6">
+        <div className="mx-auto max-w-[1180px] overflow-hidden rounded-[40px] bg-gradient-to-br from-orange-500 to-orange-400 px-7 py-16 text-white shadow-[0_30px_80px_rgba(242,140,40,.25)] sm:px-12 lg:px-20 lg:py-20">
+          <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto]">
+            <div>
+              <div className="text-sm font-bold uppercase tracking-[0.25em] text-white/70">
+                Պատրա՞ստ եք
+              </div>
+
+              <h2 className="mt-4 max-w-3xl text-4xl font-black tracking-[-0.04em] sm:text-5xl lg:text-6xl">
+                Ձեր հաջորդ հիշողությունը սկսվում է այստեղ։
+              </h2>
+
+              <p className="mt-6 max-w-2xl text-white/80">
+                Պատմեք մեզ ձեր գաղափարը, իսկ մենք կօգնենք այն վերածել
+                իրականության։
+              </p>
+            </div>
+
+            <Link
+              href="/planner"
+              className="inline-flex min-h-14 items-center justify-center rounded-full bg-white px-8 font-black text-orange-500 transition hover:-translate-y-1 hover:shadow-xl"
+            >
+              Կազմակերպել միջոցառում →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="bg-[#1f1f1f] px-6 py-12 text-white">
+        <div className="mx-auto grid max-w-[1180px] gap-10 md:grid-cols-3">
+          <div>
+            <div className="text-2xl font-black">
+              Արև <span className="text-orange-400">Իվենթ</span>
+            </div>
+
+            <p className="mt-4 max-w-sm text-sm leading-7 text-white/50">
+              Միջոցառումներ, որոնք դառնում են հիշողություններ։
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-5 text-sm text-[#777]">
-            <a
-              href="/about"
-              className="transition hover:text-[#f28c28]"
-            >
-              Մեր մասին
-            </a>
+          <div>
+            <div className="font-bold">Արագ հղումներ</div>
 
-            <a
-              href="/contact"
-              className="transition hover:text-[#f28c28]"
-            >
-              Կապ
-            </a>
+            <div className="mt-4 flex flex-col gap-3 text-sm text-white/60">
+              <Link href="#about" className="transition hover:text-white">
+                Մեր մասին
+              </Link>
 
-            <a
-              href="/partners"
-              className="transition hover:text-[#f28c28]"
-            >
-              Մասնագետներ
-            </a>
+              <Link
+                href="#services"
+                className="transition hover:text-white"
+              >
+                Ծառայություններ
+              </Link>
 
-            <a
-              href="/knowledge"
-              className="transition hover:text-[#f28c28]"
-            >
-              Գիտելիք
-            </a>
+              <Link
+                href="/planner"
+                className="transition hover:text-white"
+              >
+                Event Planner
+              </Link>
+
+              <Link href="/profile" className="transition hover:text-white">
+                Իմ հաշիվը
+              </Link>
+            </div>
           </div>
 
-          <p className="text-sm text-[#999]">
-            © 2026 Arev Event
-          </p>
+          <div>
+            <div className="font-bold">Կապ</div>
+
+            <div className="mt-4 space-y-3 text-sm text-white/60">
+              <p>Հայաստան</p>
+              <p>Եկեք ստեղծենք ձեր հաջորդ մեծ օրը։</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-auto mt-12 max-w-[1180px] border-t border-white/10 pt-6 text-center text-xs text-white/40">
+          © {new Date().getFullYear()} Արև Իվենթ — Բոլոր իրավունքները
+          պաշտպանված են։
         </div>
       </footer>
     </main>

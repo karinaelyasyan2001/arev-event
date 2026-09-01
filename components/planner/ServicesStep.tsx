@@ -105,14 +105,14 @@ export default function ServicesStep({
           ← Հետ
         </button>
 
-        <button
-          type="button"
-          disabled={selectedServices.length === 0}
+       <button
+  type="button"
+  disabled={selectedServices.length === 0}
   onClick={onNext}
-          className="rounded-full bg-[#f28c28] px-8 py-4 font-semibold text-white hover:bg-[#df7817] disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          Հաջորդը →
-        </button>
+  className="rounded-full bg-[#f28c28] px-8 py-4 font-semibold text-white hover:bg-[#df7817] disabled:cursor-not-allowed disabled:opacity-40"
+>
+  Հաջորդը →
+</button>
 
       </div>
 

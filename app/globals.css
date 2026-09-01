@@ -1,77 +1,288 @@
-
 @import "tailwindcss";
 
-/* =========================
-   AREV EVENT — GLOBAL STYLES
-========================= */
-
 :root {
-  --background: #fffaf2;
-  --foreground: #252525;
-  --brand: #f28c28;
-  --brand-dark: #df7817;
-  --muted: #666666;
-  --white: #ffffff;
+  --arev-orange: #f28c28;
+  --arev-orange-dark: #d96f0b;
+  --arev-gold: #f7b955;
+  --arev-cream: #fffaf2;
+  --arev-white: #ffffff;
+  --arev-dark: #1f1f1f;
+  --arev-muted: #737373;
+  --arev-border: rgba(31, 31, 31, 0.08);
+  --arev-shadow: 0 20px 60px rgba(31, 31, 31, 0.08);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: Arial, Helvetica, sans-serif;
+* {
+  box-sizing: border-box;
 }
-
-/* =========================
-   HTML
-========================= */
 
 html {
   scroll-behavior: smooth;
 }
 
-/* =========================
-   BODY
-========================= */
-
 body {
   margin: 0;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--arev-cream);
+  color: var(--arev-dark);
+  font-family:
+    Arial,
+    "Noto Sans Armenian",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* =========================
-   LINKS
-========================= */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
 
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* =========================
-   BUTTONS
-========================= */
-
-button {
-  font-family: inherit;
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
-/* =========================
-   INPUTS
-========================= */
+/* ================================
+   AREV EVENT — GLOBAL UTILITIES
+================================ */
 
-input,
-textarea,
-select {
-  font-family: inherit;
+.arev-container {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
 }
 
-/* =========================
-   SELECTION
-========================= */
+.arev-section {
+  padding: 100px 0;
+}
+
+.arev-section-sm {
+  padding: 60px 0;
+}
+
+.arev-title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 4.2rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.arev-subtitle {
+  max-width: 680px;
+  margin: 20px auto 0;
+  color: var(--arev-muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.arev-gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--arev-orange),
+    var(--arev-gold)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.arev-card {
+  border: 1px solid var(--arev-border);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--arev-shadow);
+}
+
+.arev-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--arev-orange);
+  color: white;
+  font-weight: 700;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.arev-button:hover {
+  transform: translateY(-2px);
+  background: var(--arev-orange-dark);
+  box-shadow: 0 12px 30px rgba(242, 140, 40, 0.28);
+}
+
+.arev-button-secondary {
+  background: white;
+  color: var(--arev-dark);
+  border: 1px solid var(--arev-border);
+}
+
+.arev-button-secondary:hover {
+  background: #fff7ec;
+  color: var(--arev-orange-dark);
+}
+
+/* ================================
+   ANIMATIONS
+================================ */
+
+@keyframes arevFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes arevFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.arev-fade-up {
+  animation: arevFadeUp 0.7s ease both;
+}
+
+.arev-float {
+  animation: arevFloat 4s ease-in-out infinite;
+}
+
+/* ================================
+   FORM ELEMENTS
+================================ */
+
+.arev-input,
+.arev-textarea,
+.arev-select {
+  width: 100%;
+  border: 1px solid var(--arev-border);
+  border-radius: 16px;
+  background: white;
+  color: var(--arev-dark);
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.arev-input,
+.arev-select {
+  min-height: 52px;
+  padding: 0 16px;
+}
+
+.arev-textarea {
+  min-height: 130px;
+  padding: 14px 16px;
+  resize: vertical;
+}
+
+.arev-input:focus,
+.arev-textarea:focus,
+.arev-select:focus {
+  border-color: var(--arev-orange);
+  box-shadow: 0 0 0 4px rgba(242, 140, 40, 0.12);
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 900px) {
+  .arev-section {
+    padding: 75px 0;
+  }
+
+  .arev-container {
+    width: min(100% - 32px, 720px);
+  }
+}
+
+@media (max-width: 640px) {
+  .arev-section {
+    padding: 56px 0;
+  }
+
+  .arev-section-sm {
+    padding: 40px 0;
+  }
+
+  .arev-container {
+    width: min(100% - 24px, 560px);
+  }
+
+  .arev-title {
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+
+  .arev-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .arev-button {
+    width: 100%;
+  }
+
+  .arev-card {
+    border-radius: 22px;
+  }
+}
+
+/* ================================
+   ACCESSIBILITY
+================================ */
+
+:focus-visible {
+  outline: 3px solid rgba(242, 140, 40, 0.45);
+  outline-offset: 3px;
+}
 
 ::selection {
-  background: var(--brand);
-  color: #ffffff;
+  background: rgba(242, 140, 40, 0.22);
 }
 
+/* ================================
+   REDUCED MOTION
+================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

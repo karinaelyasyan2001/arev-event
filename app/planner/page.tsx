@@ -17,15 +17,17 @@ export default function PlannerPage() {
   const [step, setStep] = useState(1);
 
   const [eventPlan, setEventPlan] = useState({
-    eventType: "",
-    date: "",
-    location: "",
-    guests: 0,
-    budget: 0,
-    services: [] as string[],
-    style: "",
-    notes: "",
-  });
+  eventType: "",
+  customEvent: "",
+  date: "",
+  location: "",
+  customLocation: "",
+  guests: 0,
+  budget: 0,
+  services: [] as string[],
+  style: "",
+  notes: "",
+});
 
   const nextStep = () => {
     setStep((currentStep) =>
@@ -83,16 +85,23 @@ export default function PlannerPage() {
 
       {/* STEP 1 */}
       {step === 1 && (
-        <EventStep
-          selectedEvent={eventPlan.eventType}
-          onSelectEvent={(event) =>
-            setEventPlan((currentPlan) => ({
-              ...currentPlan,
-              eventType: event,
-            }))
-          }
-          onNext={nextStep}
-        />
+   <EventStep
+  selectedEvent={eventPlan.eventType}
+  customEvent={eventPlan.customEvent}
+  onSelectEvent={(event) =>
+    setEventPlan((currentPlan) => ({
+      ...currentPlan,
+      eventType: event,
+    }))
+  }
+  onChangeCustomEvent={(value) =>
+    setEventPlan((currentPlan) => ({
+      ...currentPlan,
+      customEvent: value,
+    }))
+  }
+  onNext={nextStep}
+/>
       )}
 
       {/* STEP 2 */}
@@ -112,17 +121,24 @@ export default function PlannerPage() {
 
       {/* STEP 3 */}
       {step === 3 && (
-        <LocationStep
-          selectedLocation={eventPlan.location}
-          onSelectLocation={(location) =>
-            setEventPlan((currentPlan) => ({
-              ...currentPlan,
-              location,
-            }))
-          }
-          onNext={nextStep}
-          onBack={previousStep}
-        />
+       <LocationStep
+  selectedLocation={eventPlan.location}
+  customLocation={eventPlan.customLocation}
+  onSelectLocation={(location) =>
+    setEventPlan((currentPlan) => ({
+      ...currentPlan,
+      location,
+    }))
+  }
+  onChangeCustomLocation={(value) =>
+    setEventPlan((currentPlan) => ({
+      ...currentPlan,
+      customLocation: value,
+    }))
+  }
+  onNext={nextStep}
+  onBack={previousStep}
+/>
       )}
 
       {/* STEP 4 */}
