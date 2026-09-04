@@ -6,6 +6,7 @@ type LocationStepProps = {
   onNext: () => void;
   onBack: () => void;
 };
+
 const locationTypes = [
   {
     id: "hall",
@@ -65,32 +66,30 @@ export default function LocationStep({
   onNext,
   onBack,
 }: LocationStepProps) {
-  return (
-    <section className="mx-auto w-full max-w-5xl px-6 py-16">
-      
-      {/* Title */}
-      <div className="text-center">
+  const canContinue =
+    selectedLocation.trim() !== "" || customLocation.trim() !== "";
 
-        <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#f28c28]">
+  return (
+    <section className="mx-auto w-full max-w-5xl">
+      {/* Title */}
+      <div className="mx-auto max-w-3xl px-1 text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#f28c28] sm:text-sm sm:tracking-[0.25em]">
           ՔԱՅԼ 03
         </p>
 
-        <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+        <h1 className="mt-4 text-[2rem] font-black leading-[1.08] tracking-[-0.04em] text-gray-900 min-[380px]:text-[2.2rem] sm:text-4xl md:text-5xl">
           Որտե՞ղ է լինելու քո միջոցառումը։
         </h1>
 
-        <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#666]">
+        <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#666] sm:mt-5 sm:text-lg sm:leading-8">
           Ընտրիր այն վայրը, որը ամենամոտն է քո պատկերացմանը։
           Եթե դեռ չգիտես՝ ոչինչ, Արևը կօգնի քեզ ընտրել։
         </p>
-
       </div>
 
       {/* Location cards */}
-      <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-
+      <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
         {locationTypes.map((location) => {
-
           const isSelected = selectedLocation === location.id;
 
           return (
@@ -98,87 +97,101 @@ export default function LocationStep({
               key={location.id}
               type="button"
               onClick={() => onSelectLocation(location.id)}
-              className={`group rounded-3xl border p-6 text-left transition duration-300 ${
+              aria-pressed={isSelected}
+              className={`group relative min-h-[165px] overflow-hidden rounded-[22px] border p-4 text-left transition-all duration-300 active:scale-[0.98] sm:min-h-[190px] sm:rounded-3xl sm:p-6 ${
                 isSelected
-                  ? "border-[#f28c28] bg-[#fff3e3] shadow-lg"
-                  : "border-black/10 bg-white hover:-translate-y-1 hover:border-[#f28c28]/40 hover:shadow-lg"
+                  ? "border-[#f28c28] bg-[#fff3e3] shadow-[0_15px_40px_rgba(242,140,40,.14)]"
+                  : "border-black/[0.08] bg-white shadow-[0_8px_25px_rgba(31,31,31,.04)] hover:-translate-y-1 hover:border-[#f28c28]/40 hover:shadow-[0_18px_40px_rgba(31,31,31,.09)]"
               }`}
             >
+              {/* Decorative glow */}
+              <div
+                className={`pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-orange-200/30 blur-2xl transition duration-500 ${
+                  isSelected
+                    ? "opacity-100"
+                    : "opacity-0 group-hover:opacity-100"
+                }`}
+              />
 
-              <div className="flex items-center justify-between">
-
-                <span className="text-4xl">
+              {/* Icon + selected */}
+              <div className="relative flex items-center justify-between gap-3">
+                <div
+                  className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-2xl transition-all duration-300 sm:h-14 sm:w-14 sm:text-3xl ${
+                    isSelected
+                      ? "bg-[#f28c28] shadow-[0_10px_25px_rgba(242,140,40,.22)]"
+                      : "bg-gray-100 group-hover:scale-105 group-hover:bg-orange-50"
+                  }`}
+                >
                   {location.icon}
-                </span>
+                </div>
 
                 {isSelected && (
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#f28c28] text-sm text-white">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#f28c28] text-sm font-bold text-white shadow-sm">
                     ✓
                   </span>
                 )}
-
               </div>
 
-              <h2 className="mt-5 text-lg font-bold">
+              {/* Text */}
+              <h2 className="relative mt-5 text-sm font-black leading-5 text-gray-900 sm:text-base">
                 {location.title}
               </h2>
 
-              <p className="mt-2 text-sm leading-6 text-[#777]">
+              <p className="relative mt-2 text-xs leading-5 text-[#777] sm:text-sm sm:leading-6">
                 {location.description}
               </p>
 
+              {isSelected && (
+                <p className="relative mt-3 text-xs font-bold text-[#f28c28] sm:text-sm">
+                  Ընտրված է ✓
+                </p>
+              )}
             </button>
           );
-
         })}
-
       </div>
 
       {/* Extra information */}
-      <div className="mt-10 rounded-3xl border border-dashed border-black/15 bg-white/60 p-7">
+      <div className="mt-5 rounded-[24px] border border-dashed border-black/[0.12] bg-white/80 p-5 shadow-[0_8px_30px_rgba(31,31,31,.03)] sm:mt-8 sm:rounded-3xl sm:p-8">
+        <div>
+          <h2 className="text-lg font-black text-gray-900 sm:text-xl">
+            Ունե՞ս կոնկրետ վայր։
+          </h2>
 
-        <h2 className="text-xl font-semibold">
-          Ունե՞ս կոնկրետ վայր։
-        </h2>
+          <p className="mt-2 text-sm leading-6 text-[#666] sm:text-base">
+            Եթե արդեն գիտես վայրի անունը, գրիր այստեղ։
+          </p>
+        </div>
 
-        <p className="mt-2 text-[#666]">
-          Եթե արդեն գիտես վայրի անունը, գրիր այստեղ։
-        </p>
-
-      <input
-  type="text"
-  value={customLocation}
-  onChange={(event) =>
-    onChangeCustomLocation(event.target.value)
-  }
-  placeholder="Օրինակ՝ Dvin Music Hall"
-  className="mt-5 w-full rounded-2xl border border-black/10 bg-white px-5 py-4 outline-none transition focus:border-[#f28c28]"
-/>
-
+        <input
+          id="custom-location"
+          type="text"
+          value={customLocation}
+          onChange={(event) => onChangeCustomLocation(event.target.value)}
+          placeholder="Օրինակ՝ Dvin Music Hall"
+          className="mt-5 min-h-14 w-full rounded-2xl border border-black/[0.08] bg-[#fffaf2] px-4 text-sm text-gray-900 outline-none transition-all duration-200 hover:border-[#f28c28]/30 focus:border-[#f28c28] focus:bg-white focus:ring-4 focus:ring-[#f28c28]/10 sm:px-5 sm:text-base"
+        />
       </div>
 
       {/* Navigation */}
-      <div className="mt-10 flex items-center justify-between">
-
+      <div className="mt-6 flex flex-col-reverse gap-3 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
         <button
           type="button"
           onClick={onBack}
-          className="rounded-full border border-black/10 bg-white px-7 py-3 font-semibold transition hover:bg-black hover:text-white"
+          className="min-h-14 w-full rounded-2xl border border-black/[0.08] bg-white px-7 py-3 text-sm font-bold text-gray-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-black hover:text-white sm:w-auto sm:rounded-full sm:text-base"
         >
           ← Հետ
         </button>
 
         <button
           type="button"
-          disabled={!selectedLocation}
+          disabled={!canContinue}
           onClick={onNext}
-          className="rounded-full bg-[#f28c28] px-8 py-4 font-semibold text-white transition hover:bg-[#df7817] disabled:cursor-not-allowed disabled:opacity-40"
+          className="min-h-14 w-full rounded-2xl bg-[#f28c28] px-8 py-4 text-sm font-bold text-white shadow-[0_10px_25px_rgba(242,140,40,.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#df7817] hover:shadow-[0_15px_35px_rgba(242,140,40,.24)] disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto sm:min-w-[160px] sm:rounded-full sm:text-base"
         >
           Հաջորդը →
         </button>
-
       </div>
-
     </section>
   );
 }

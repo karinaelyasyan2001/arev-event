@@ -1,4 +1,3 @@
-
 type NotesStepProps = {
   notes: string;
   onChangeNotes: (notes: string) => void;
@@ -13,56 +12,72 @@ export default function NotesStep({
   onBack,
 }: NotesStepProps) {
   return (
-    <section className="mx-auto w-full max-w-4xl px-6 py-16">
-
-      <div className="text-center">
-
-        <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#f28c28]">
+    <section className="mx-auto w-full max-w-4xl">
+      {/* Title */}
+      <div className="mx-auto max-w-3xl px-1 text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#f28c28] sm:text-sm sm:tracking-[0.25em]">
           ՔԱՅԼ 08
         </p>
 
-        <h1 className="mt-4 text-4xl font-bold sm:text-5xl">
+        <h1 className="mt-4 text-[2rem] font-black leading-[1.08] tracking-[-0.04em] text-gray-900 min-[380px]:text-[2.2rem] sm:text-4xl md:text-5xl">
           Ասա մեզ քո գաղափարները։
         </h1>
 
-        <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#666]">
+        <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#666] sm:mt-5 sm:text-lg sm:leading-8">
           Այստեղ գրիր ամեն ինչ։ Նույնիսկ եթե դեռ վստահ չես։
           Արևը կարող է օգնել գաղափարդ վերածել իրական պլանի։
         </p>
-
       </div>
 
-      <div className="mt-12 rounded-[2rem] bg-white p-6 shadow-sm sm:p-8">
+      {/* Notes card */}
+      <div className="mt-8 rounded-[24px] border border-black/[0.08] bg-white p-5 shadow-[0_10px_35px_rgba(31,31,31,.05)] sm:mt-12 sm:rounded-[2rem] sm:p-8">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <label
+              htmlFor="event-notes"
+              className="text-base font-black text-gray-900 sm:text-lg"
+            >
+              Քո նշումները
+            </label>
 
-        <label
-          htmlFor="event-notes"
-          className="font-semibold"
-        >
-          Քո նշումները
-        </label>
+            <p className="mt-1 text-xs leading-5 text-[#888] sm:text-sm">
+              Գրիր ցանկացած մանրուք, որը կարևոր է քեզ համար։
+            </p>
+          </div>
+
+          <div className="hidden shrink-0 rounded-full bg-[#fff3e3] px-3 py-1.5 text-xs font-bold text-[#f28c28] sm:block">
+            {notes.length} նիշ
+          </div>
+        </div>
 
         <textarea
           id="event-notes"
           value={notes}
-          onChange={(event) =>
-            onChangeNotes(event.target.value)
-          }
+          onChange={(event) => onChangeNotes(event.target.value)}
           placeholder="Օրինակ՝ ուզում եմ շատ ծաղիկներ, տաք լուսավորություն, հատուկ ֆոտոզոնա, հյուրերի համար անակնկալ..."
-          className="mt-5 min-h-[280px] w-full resize-none rounded-3xl border border-black/10 bg-[#fffaf2] p-6 leading-7 outline-none transition focus:border-[#f28c28]"
+          maxLength={3000}
+          className="mt-5 min-h-[240px] w-full resize-y rounded-[20px] border border-black/[0.08] bg-[#fffaf2] p-4 text-sm leading-7 text-gray-900 outline-none transition-all duration-200 hover:border-[#f28c28]/30 focus:border-[#f28c28] focus:bg-white focus:ring-4 focus:ring-[#f28c28]/10 sm:min-h-[300px] sm:rounded-3xl sm:p-6 sm:text-base"
         />
 
-        <div className="mt-4 text-sm text-[#888]">
-          {notes.length} նիշ
-        </div>
+        <div className="mt-3 flex items-center justify-between gap-3 text-xs text-[#888] sm:text-sm">
+          <span>
+            {notes.length === 0
+              ? "Կարող ես գրել ազատ ձևով։"
+              : "Ձեր գաղափարը պահպանվում է։"}
+          </span>
 
+          <span className="shrink-0 font-medium">
+            {notes.length}/3000
+          </span>
+        </div>
       </div>
 
-      <div className="mt-10 flex justify-between">
-
+      {/* Navigation */}
+      <div className="mt-6 flex flex-col-reverse gap-3 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
         <button
           type="button"
           onClick={onBack}
-          className="rounded-full border border-black/10 bg-white px-7 py-3 font-semibold hover:bg-black hover:text-white"
+          className="min-h-14 w-full rounded-2xl border border-black/[0.08] bg-white px-7 py-3 text-sm font-bold text-gray-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-black hover:text-white sm:w-auto sm:rounded-full sm:text-base"
         >
           ← Հետ
         </button>
@@ -70,13 +85,11 @@ export default function NotesStep({
         <button
           type="button"
           onClick={onNext}
-          className="rounded-full bg-[#f28c28] px-8 py-4 font-semibold text-white hover:bg-[#df7817]"
+          className="min-h-14 w-full rounded-2xl bg-[#f28c28] px-8 py-4 text-sm font-bold text-white shadow-[0_10px_25px_rgba(242,140,40,.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#df7817] hover:shadow-[0_15px_35px_rgba(242,140,40,.24)] sm:w-auto sm:min-w-[180px] sm:rounded-full sm:text-base"
         >
           Ամփոփել →
         </button>
-
       </div>
-
     </section>
   );
 }

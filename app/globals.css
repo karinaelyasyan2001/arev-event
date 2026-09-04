@@ -1,3 +1,4 @@
+
 @import "tailwindcss";
 
 :root {
@@ -12,12 +13,17 @@
   --arev-shadow: 0 20px 60px rgba(31, 31, 31, 0.08);
 }
 
+/* ================================
+   GLOBAL
+================================ */
+
 * {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 90px;
 }
 
 body {
@@ -25,8 +31,8 @@ body {
   background: var(--arev-cream);
   color: var(--arev-dark);
   font-family:
-    Arial,
     "Noto Sans Armenian",
+    Arial,
     sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -55,7 +61,7 @@ img {
 }
 
 /* ================================
-   AREV EVENT — GLOBAL UTILITIES
+   AREV EVENT — CONTAINERS
 ================================ */
 
 .arev-container {
@@ -70,6 +76,10 @@ img {
 .arev-section-sm {
   padding: 60px 0;
 }
+
+/* ================================
+   TYPOGRAPHY
+================================ */
 
 .arev-title {
   margin: 0;
@@ -98,12 +108,22 @@ img {
   color: transparent;
 }
 
+/* ================================
+   CARDS
+================================ */
+
 .arev-card {
   border: 1px solid var(--arev-border);
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.9);
   box-shadow: var(--arev-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
+
+/* ================================
+   BUTTONS
+================================ */
 
 .arev-button {
   display: inline-flex;
@@ -116,6 +136,7 @@ img {
   background: var(--arev-orange);
   color: white;
   font-weight: 700;
+  box-shadow: 0 10px 25px rgba(242, 140, 40, 0.16);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -123,20 +144,46 @@ img {
 }
 
 .arev-button:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   background: var(--arev-orange-dark);
-  box-shadow: 0 12px 30px rgba(242, 140, 40, 0.28);
+  box-shadow: 0 16px 35px rgba(242, 140, 40, 0.28);
+}
+
+.arev-button:active {
+  transform: translateY(-1px);
 }
 
 .arev-button-secondary {
-  background: white;
+  background: rgba(255, 255, 255, 0.9);
   color: var(--arev-dark);
   border: 1px solid var(--arev-border);
+  box-shadow: 0 8px 25px rgba(31, 31, 31, 0.05);
 }
 
 .arev-button-secondary:hover {
   background: #fff7ec;
   color: var(--arev-orange-dark);
+  border-color: rgba(242, 140, 40, 0.25);
+}
+
+/* ================================
+   PREMIUM HOVER
+================================ */
+
+.arev-card,
+article {
+  -webkit-tap-highlight-color: transparent;
+}
+
+article {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+article:hover {
+  border-color: rgba(242, 140, 40, 0.16);
 }
 
 /* ================================
@@ -155,6 +202,16 @@ img {
   }
 }
 
+@keyframes arevFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes arevFloat {
   0%,
   100% {
@@ -166,12 +223,33 @@ img {
   }
 }
 
+@keyframes arevGlow {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
 .arev-fade-up {
   animation: arevFadeUp 0.7s ease both;
 }
 
+.arev-fade-in {
+  animation: arevFadeIn 0.8s ease both;
+}
+
 .arev-float {
   animation: arevFloat 4s ease-in-out infinite;
+}
+
+.arev-glow {
+  animation: arevGlow 5s ease-in-out infinite;
 }
 
 /* ================================
@@ -189,7 +267,8 @@ img {
   outline: none;
   transition:
     border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .arev-input,
@@ -209,6 +288,61 @@ img {
 .arev-select:focus {
   border-color: var(--arev-orange);
   box-shadow: 0 0 0 4px rgba(242, 140, 40, 0.12);
+}
+
+.arev-input:hover,
+.arev-textarea:hover,
+.arev-select:hover {
+  border-color: rgba(242, 140, 40, 0.25);
+}
+
+/* ================================
+   LINKS
+================================ */
+
+.arev-link {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.arev-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: right;
+  background: var(--arev-orange);
+  transition: transform 0.25s ease;
+}
+
+.arev-link:hover {
+  color: var(--arev-orange);
+}
+
+.arev-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ================================
+   PREMIUM SELECTION
+================================ */
+
+::selection {
+  background: rgba(242, 140, 40, 0.22);
+  color: var(--arev-dark);
+}
+
+/* ================================
+   ACCESSIBILITY
+================================ */
+
+:focus-visible {
+  outline: 3px solid rgba(242, 140, 40, 0.45);
+  outline-offset: 3px;
 }
 
 /* ================================
@@ -254,19 +388,6 @@ img {
   .arev-card {
     border-radius: 22px;
   }
-}
-
-/* ================================
-   ACCESSIBILITY
-================================ */
-
-:focus-visible {
-  outline: 3px solid rgba(242, 140, 40, 0.45);
-  outline-offset: 3px;
-}
-
-::selection {
-  background: rgba(242, 140, 40, 0.22);
 }
 
 /* ================================

@@ -14,26 +14,28 @@ export default function DateStep({
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <section className="mx-auto w-full max-w-4xl px-6 py-16">
-      <div className="text-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#f28c28]">
+    <section className="mx-auto w-full max-w-4xl">
+      {/* HEADER */}
+      <div className="mx-auto max-w-3xl px-1 text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#f28c28] sm:text-sm sm:tracking-[0.25em]">
           ՔԱՅԼ 02
         </p>
 
-        <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+        <h1 className="mt-4 text-[2rem] font-black leading-[1.08] tracking-[-0.04em] text-gray-900 min-[380px]:text-[2.2rem] sm:text-4xl md:text-5xl">
           Ե՞րբ է քո մեծ օրը։
         </h1>
 
-        <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#666]">
+        <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#666] sm:mt-5 sm:text-lg sm:leading-8">
           Ընտրիր միջոցառման ամսաթիվը։ Հետագայում այստեղ կարող ենք ցույց տալ
           նաև մեր մասնագետների ազատ և զբաղված օրերը։
         </p>
       </div>
 
-      <div className="mx-auto mt-12 max-w-xl rounded-[2rem] border border-black/10 bg-white p-8 shadow-sm">
+      {/* DATE CARD */}
+      <div className="mx-auto mt-8 max-w-xl rounded-[24px] border border-black/[0.08] bg-white p-5 shadow-[0_10px_35px_rgba(31,31,31,.05)] sm:mt-12 sm:rounded-[2rem] sm:p-8">
         <label
           htmlFor="event-date"
-          className="block text-sm font-semibold"
+          className="block text-sm font-bold text-gray-900 sm:text-base"
         >
           Միջոցառման ամսաթիվ
         </label>
@@ -44,34 +46,35 @@ export default function DateStep({
           min={today}
           value={selectedDate}
           onChange={(event) => onSelectDate(event.target.value)}
-          className="mt-4 w-full rounded-2xl border border-black/10 bg-[#fffaf2] px-5 py-4 text-lg outline-none transition focus:border-[#f28c28]"
+          className="mt-4 min-h-14 w-full rounded-2xl border border-black/[0.08] bg-[#fffaf2] px-4 text-base text-gray-900 outline-none transition focus:border-[#f28c28] focus:bg-white focus:ring-4 focus:ring-[#f28c28]/10 sm:px-5 sm:py-4 sm:text-lg"
         />
 
+        {/* Selected date */}
         {selectedDate && (
-          <div className="mt-6 rounded-2xl bg-[#fff3e3] p-5">
-            <p className="text-sm text-[#777]">
+          <div className="mt-5 rounded-2xl border border-orange-100 bg-[#fff3e3] p-4 sm:mt-6 sm:p-5">
+            <p className="text-xs font-medium text-[#777] sm:text-sm">
               Ընտրված ամսաթիվ
             </p>
 
-            <p className="mt-1 text-xl font-bold">
-              {new Date(`${selectedDate}T12:00:00`).toLocaleDateString(
-                "hy-AM",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                }
-              )}
+            <p className="mt-1 text-lg font-black text-gray-900 sm:text-xl">
+              {new Date(
+                `${selectedDate}T12:00:00`
+              ).toLocaleDateString("hy-AM", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
             </p>
           </div>
         )}
       </div>
 
-      <div className="mt-10 flex justify-between">
+      {/* NAVIGATION */}
+      <div className="mt-6 flex flex-col-reverse gap-3 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
         <button
           type="button"
           onClick={onBack}
-          className="rounded-full border border-black/10 bg-white px-7 py-3 font-semibold transition hover:bg-black hover:text-white"
+          className="min-h-14 w-full rounded-2xl border border-black/[0.08] bg-white px-7 py-3 text-sm font-bold text-gray-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-black hover:text-white sm:w-auto sm:rounded-full sm:text-base"
         >
           ← Հետ
         </button>
@@ -80,7 +83,7 @@ export default function DateStep({
           type="button"
           disabled={!selectedDate}
           onClick={onNext}
-          className="rounded-full bg-[#f28c28] px-8 py-4 font-semibold text-white transition hover:bg-[#df7817] disabled:cursor-not-allowed disabled:opacity-40"
+          className="min-h-14 w-full rounded-2xl bg-[#f28c28] px-8 py-4 text-sm font-bold text-white shadow-[0_10px_25px_rgba(242,140,40,.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#df7817] hover:shadow-[0_15px_35px_rgba(242,140,40,.24)] disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto sm:min-w-[160px] sm:rounded-full sm:text-base"
         >
           Հաջորդը →
         </button>

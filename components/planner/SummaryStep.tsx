@@ -34,13 +34,20 @@ const eventNames: Record<string, string> = {
 };
 
 const locationNames: Record<string, string> = {
+  hall: "Միջոցառումների սրահ",
+  restaurant: "Ռեստորան",
+  hotel: "Հյուրանոց",
+  outdoor: "Բացօթյա",
+  home: "Տուն",
+  rooftop: "Rooftop",
+  other: "Այլ վայր",
+  unknown: "Դեռ չեմ որոշել",
   yerevan: "Երևան",
   abovyan: "Աբովյան",
   echmiadzin: "Էջմիածին",
   dilijan: "Դիլիջան",
   tsaghkadzor: "Ծաղկաձոր",
   garni: "Գառնի",
-  other: "Այլ վայր",
 };
 
 const serviceNames: Record<string, string> = {
@@ -58,6 +65,21 @@ const serviceNames: Record<string, string> = {
   effects: "Հատուկ էֆեկտներ",
 };
 
+const serviceIcons: Record<string, string> = {
+  host: "🎤",
+  dj: "🎧",
+  photo: "📸",
+  video: "🎥",
+  decor: "🌸",
+  lighting: "💡",
+  music: "🎵",
+  flowers: "💐",
+  cake: "🍰",
+  catering: "🍽️",
+  makeup: "💄",
+  effects: "✨",
+};
+
 const styleNames: Record<string, string> = {
   elegant: "Էլեգանտ",
   modern: "Ժամանակակից",
@@ -67,6 +89,17 @@ const styleNames: Record<string, string> = {
   colorful: "Գունավոր",
   traditional: "Ավանդական",
   creative: "Կրեատիվ",
+};
+
+const styleIcons: Record<string, string> = {
+  elegant: "✨",
+  modern: "🖤",
+  romantic: "🌹",
+  luxury: "👑",
+  nature: "🌿",
+  colorful: "🎨",
+  traditional: "🏺",
+  creative: "💡",
 };
 
 export default function SummaryStep({
@@ -96,7 +129,7 @@ export default function SummaryStep({
         year: "numeric",
         month: "long",
         day: "numeric",
-      }).format(new Date(`${eventPlan.date}T00:00:00`))
+      }).format(new Date(`${eventPlan.date}T12:00:00`))
     : "Չի նշվել";
 
   const formattedBudget =
@@ -106,16 +139,18 @@ export default function SummaryStep({
 
   const readableServices =
     eventPlan.services.length > 0
-      ? eventPlan.services.map(
-          (service) => serviceNames[service] || service
-        )
+      ? eventPlan.services.map((service) => ({
+          id: service,
+          name: serviceNames[service] || service,
+          icon: serviceIcons[service] || "✨",
+        }))
       : [];
 
   const readableStyle =
     styleNames[eventPlan.style] || eventPlan.style || "Չի նշվել";
 
   const saveEvent = async () => {
-    if (isSaving) {
+    if (isSaving || success) {
       return;
     }
 
@@ -188,32 +223,46 @@ export default function SummaryStep({
 
   return (
     <section className="mx-auto w-full max-w-5xl">
-      <div className="mb-10 text-center">
-        <span className="mb-4 inline-flex rounded-full bg-[#f28c28]/10 px-4 py-2 text-sm font-semibold text-[#f28c28]">
-          Քայլ 9
+      {/* Title */}
+      <div className="mx-auto max-w-3xl px-1 text-center">
+        <span className="mb-4 inline-flex rounded-full bg-[#f28c28]/10 px-4 py-2 text-xs font-bold text-[#f28c28] sm:text-sm">
+          Քայլ 9 / 9
         </span>
 
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-5xl">
+        <h1 className="text-[2rem] font-black leading-[1.08] tracking-[-0.04em] text-gray-900 min-[380px]:text-[2.2rem] sm:text-4xl md:text-5xl">
           Ձեր միջոցառման ամփոփումը
         </h1>
 
-        <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-gray-600 md:text-lg">
+        <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-gray-600 sm:text-lg sm:leading-8">
           Ստուգեք տվյալները և պահպանեք ձեր միջոցառման պլանը։
         </p>
       </div>
 
-      <div className="overflow-hidden rounded-[2rem] border border-black/10 bg-white shadow-xl">
-        <div className="bg-[#f28c28] px-6 py-8 text-white md:px-10">
-          <p className="text-sm font-medium text-white/80">
-            Ձեր միջոցառումը
-          </p>
+      {/* Main summary card */}
+      <div className="mt-8 overflow-hidden rounded-[24px] border border-black/[0.08] bg-white shadow-[0_15px_50px_rgba(31,31,31,.08)] sm:mt-12 sm:rounded-[2rem]">
+        {/* Header */}
+        <div className="relative overflow-hidden bg-[#f28c28] px-5 py-7 text-white sm:px-8 sm:py-10 md:px-10">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 -left-10 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
 
-          <h2 className="mt-2 text-3xl font-bold md:text-4xl">
-            {eventTitle}
-          </h2>
+          <div className="relative">
+            <p className="text-xs font-semibold text-white/75 sm:text-sm">
+              Ձեր միջոցառումը
+            </p>
+
+            <h2 className="mt-2 break-words text-2xl font-black leading-tight sm:text-3xl md:text-4xl">
+              {eventTitle}
+            </h2>
+
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold backdrop-blur-sm sm:text-sm">
+              <span>☀</span>
+              <span>Արև Իվենթ</span>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 p-6 md:grid-cols-2 md:p-10">
+        {/* Details */}
+        <div className="grid grid-cols-1 gap-3 p-4 sm:gap-4 sm:p-6 md:grid-cols-2 md:p-10">
           <SummaryCard
             icon="📅"
             title="Ամսաթիվ"
@@ -231,7 +280,7 @@ export default function SummaryStep({
             title="Հյուրերի քանակ"
             value={
               eventPlan.guests > 0
-                ? `${eventPlan.guests}+ հյուր`
+                ? `${eventPlan.guests.toLocaleString("hy-AM")} հյուր`
                 : "Չի նշվել"
             }
           />
@@ -242,79 +291,113 @@ export default function SummaryStep({
             value={formattedBudget}
           />
 
-          <SummaryCard
-            icon="✨"
-            title="Ոճ"
-            value={readableStyle}
-          />
+          {/* Style */}
+          <div className="rounded-[22px] border border-black/[0.06] bg-gray-50 p-5 transition-all duration-300 hover:border-[#f28c28]/20 hover:shadow-sm sm:rounded-3xl sm:p-6">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-2xl shadow-sm sm:h-14 sm:w-14">
+                {styleIcons[eventPlan.style] || "✨"}
+              </div>
 
-          <div className="rounded-3xl border border-black/5 bg-gray-50 p-6">
-            <p className="text-sm font-semibold text-gray-500">
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-gray-500 sm:text-sm">
+                  Ոճ
+                </p>
+
+                <p className="mt-1 break-words text-base font-black text-gray-900 sm:text-lg">
+                  {readableStyle}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Services */}
+          <div className="rounded-[22px] border border-black/[0.06] bg-gray-50 p-5 transition-all duration-300 hover:border-[#f28c28]/20 hover:shadow-sm sm:rounded-3xl sm:p-6">
+            <p className="text-xs font-semibold text-gray-500 sm:text-sm">
               Ծառայություններ
             </p>
 
             {readableServices.length > 0 ? (
               <div className="mt-4 flex flex-wrap gap-2">
-                {readableServices.map((service, index) => (
+                {readableServices.map((service) => (
                   <span
-                    key={`${service}-${index}`}
-                    className="rounded-full bg-[#f28c28]/10 px-3 py-2 text-sm font-semibold text-[#d66f12]"
+                    key={service.id}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-orange-100 bg-[#fff3e3] px-3 py-2 text-xs font-bold text-[#d66f12] sm:text-sm"
                   >
-                    {service}
+                    <span>{service.icon}</span>
+                    <span>{service.name}</span>
                   </span>
                 ))}
               </div>
             ) : (
-              <p className="mt-3 text-gray-700">Չի նշվել</p>
+              <p className="mt-3 text-sm text-gray-700">
+                Չի նշվել
+              </p>
             )}
           </div>
 
-          <div className="rounded-3xl border border-black/5 bg-gray-50 p-6 md:col-span-2">
-            <p className="text-sm font-semibold text-gray-500">
-              Լրացուցիչ նշումներ
-            </p>
+          {/* Notes */}
+          <div className="rounded-[22px] border border-black/[0.06] bg-gray-50 p-5 md:col-span-2 sm:rounded-3xl sm:p-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-lg shadow-sm">
+                💬
+              </div>
 
-            <p className="mt-3 whitespace-pre-wrap leading-7 text-gray-800">
-              {eventPlan.notes.trim() || "Լրացուցիչ նշումներ չկան։"}
-            </p>
+              <p className="text-sm font-black text-gray-900 sm:text-base">
+                Լրացուցիչ նշումներ
+              </p>
+            </div>
+
+            <div className="mt-4 rounded-2xl bg-white p-4 sm:p-5">
+              <p className="whitespace-pre-wrap break-words text-sm leading-7 text-gray-800 sm:text-base">
+                {eventPlan.notes.trim() || "Լրացուցիչ նշումներ չկան։"}
+              </p>
+            </div>
           </div>
         </div>
 
+        {/* Error */}
         {error && (
-          <div className="mx-6 mb-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm leading-6 text-red-700 md:mx-10">
+          <div className="mx-4 mb-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-4 text-sm leading-6 text-red-700 sm:mx-6 sm:mb-6 sm:px-5 md:mx-10">
             <strong>Սխալ․</strong> {error}
           </div>
         )}
 
+        {/* Success */}
         {success && (
-          <div className="mx-6 mb-6 rounded-2xl border border-green-200 bg-green-50 px-5 py-4 text-sm font-semibold text-green-700 md:mx-10">
-            ✓ Միջոցառումը հաջողությամբ պահպանվեց։ Բացվում է միջոցառման
-            էջը...
+          <div className="mx-4 mb-5 rounded-2xl border border-green-200 bg-green-50 px-4 py-4 text-sm font-semibold leading-6 text-green-700 sm:mx-6 sm:mb-6 sm:px-5 md:mx-10">
+            ✓ Միջոցառումը հաջողությամբ պահպանվեց։
+            <span className="block sm:inline">
+              {" "}
+              Բացվում է միջոցառման էջը...
+            </span>
           </div>
         )}
 
-        <div className="flex flex-col gap-3 border-t border-black/5 p-6 sm:flex-row sm:justify-between md:p-10">
-          <button
-            type="button"
-            onClick={onBack}
-            disabled={isSaving}
-            className="rounded-2xl border border-black/10 px-7 py-4 font-semibold text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            ← Հետ
-          </button>
+        {/* Navigation */}
+        <div className="border-t border-black/[0.06] p-4 sm:p-6 md:p-10">
+          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <button
+              type="button"
+              onClick={onBack}
+              disabled={isSaving}
+              className="min-h-14 w-full rounded-2xl border border-black/[0.08] bg-white px-7 py-4 text-sm font-bold text-gray-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:rounded-full sm:text-base"
+            >
+              ← Հետ
+            </button>
 
-          <button
-            type="button"
-            onClick={saveEvent}
-            disabled={isSaving || success}
-            className="rounded-2xl bg-[#f28c28] px-8 py-4 font-bold text-white shadow-lg shadow-[#f28c28]/20 transition hover:-translate-y-0.5 hover:bg-[#e77d18] disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isSaving
-              ? "Պահպանվում է..."
-              : success
-                ? "Պահպանված է ✓"
-                : "Պահպանել միջոցառումը"}
-          </button>
+            <button
+              type="button"
+              onClick={saveEvent}
+              disabled={isSaving || success}
+              className="min-h-14 w-full rounded-2xl bg-[#f28c28] px-8 py-4 text-sm font-black text-white shadow-[0_12px_30px_rgba(242,140,40,.20)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#e77d18] hover:shadow-[0_18px_40px_rgba(242,140,40,.28)] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:min-w-[230px] sm:rounded-full sm:text-base"
+            >
+              {isSaving
+                ? "Պահպանվում է..."
+                : success
+                  ? "Պահպանված է ✓"
+                  : "Պահպանել միջոցառումը"}
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -331,16 +414,18 @@ function SummaryCard({
   value: string;
 }) {
   return (
-    <div className="rounded-3xl border border-black/5 bg-gray-50 p-6">
+    <div className="rounded-[22px] border border-black/[0.06] bg-gray-50 p-5 transition-all duration-300 hover:border-[#f28c28]/20 hover:shadow-sm sm:rounded-3xl sm:p-6">
       <div className="flex items-start gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-2xl shadow-sm">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-2xl shadow-sm sm:h-14 sm:w-14">
           {icon}
         </div>
 
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-gray-500">{title}</p>
+          <p className="text-xs font-semibold text-gray-500 sm:text-sm">
+            {title}
+          </p>
 
-          <p className="mt-1 break-words text-lg font-bold text-gray-900">
+          <p className="mt-1 break-words text-base font-black text-gray-900 sm:text-lg">
             {value}
           </p>
         </div>
