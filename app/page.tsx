@@ -109,22 +109,28 @@ export default function HomePage() {
               պատմությունը։
             </p>
 
-            <div className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row">
-              <Link
-                href="/planner"
-                className="arev-button min-h-14 w-full px-8 text-base sm:w-auto"
-              >
-                Կազմակերպել միջոցառում →
-              </Link>
+            <div className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:flex-wrap">
+  <Link
+    href="/planner"
+    className="arev-button min-h-14 w-full px-8 text-base sm:w-auto"
+  >
+    Կազմակերպել միջոցառում →
+  </Link>
 
-              <Link
-                href="#services"
-                className="arev-button arev-button-secondary min-h-14 w-full px-8 text-base sm:w-auto"
-              >
-                Դիտել ծառայությունները
-              </Link>
-            </div>
+  <Link
+    href="/calculator"
+    className="arev-button arev-button-secondary min-h-14 w-full px-8 text-base sm:w-auto"
+  >
+    Հաշվել բյուջեն →
+  </Link>
 
+  <Link
+    href="#services"
+    className="arev-button arev-button-secondary min-h-14 w-full px-8 text-base sm:w-auto"
+  >
+    Դիտել ծառայությունները
+  </Link>
+</div>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-xs text-neutral-500 sm:mt-10 sm:gap-x-8 sm:text-sm">
               <span>✓ Անհատական մոտեցում</span>
               <span>✓ Փորձառու թիմ</span>
@@ -527,6 +533,15 @@ export default function HomePage() {
               >
                 Event Planner
               </Link>
+
+<Link
+  href="/calculator"
+  className="transition hover:text-white"
+>
+  Բյուջեի հաշվիչ
+</Link>
+
+
 
               <Link
                 href="/profile"

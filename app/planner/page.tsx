@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import EventStep from "@/components/planner/EventStep";
 import DateStep from "@/components/planner/DateStep";
@@ -12,7 +13,24 @@ import StyleStep from "@/components/planner/StyleStep";
 import NotesStep from "@/components/planner/NotesStep";
 import SummaryStep from "@/components/planner/SummaryStep";
 
-export default function PlannerPage() {
+const validServices = [
+  "host",
+  "dj",
+  "photo",
+  "video",
+  "decor",
+  "lighting",
+  "music",
+  "flowers",
+  "cake",
+  "catering",
+  "makeup",
+  "effects",
+];
+
+function PlannerContent() {
+  const searchParams = useSearchParams();
+
   const [step, setStep] = useState(1);
 
   const [eventPlan, setEventPlan] = useState({
@@ -27,6 +45,25 @@ export default function PlannerPage() {
     style: "",
     notes: "",
   });
+
+  useEffect(() => {
+    const service = searchParams.get("service");
+
+    if (!service || !validServices.includes(service)) {
+      return;
+    }
+
+    setEventPlan((currentPlan) => {
+      if (currentPlan.services.includes(service)) {
+        return currentPlan;
+      }
+
+      return {
+        ...currentPlan,
+        services: [...currentPlan.services, service],
+      };
+    });
+  }, [searchParams]);
 
   const nextStep = () => {
     setStep((currentStep) =>
@@ -60,7 +97,6 @@ export default function PlannerPage() {
       ================================== */}
       <section className="sticky top-[72px] z-30 border-b border-black/[0.05] bg-[#fffaf2]/90 backdrop-blur-xl sm:top-[76px]">
         <div className="mx-auto w-[min(100%-24px,1024px)] py-4 sm:w-[min(100%-32px,1024px)] sm:py-6">
-          {/* Top row */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2.5">
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-sm text-orange-600 shadow-sm sm:h-10 sm:w-10 sm:rounded-2xl sm:text-base">
@@ -83,7 +119,6 @@ export default function PlannerPage() {
             </div>
           </div>
 
-          {/* Progress */}
           <div className="mt-4 sm:mt-5">
             <div className="h-2 overflow-hidden rounded-full bg-black/[0.07] sm:h-2.5">
               <div
@@ -246,5 +281,26 @@ export default function PlannerPage() {
         )}
       </div>
     </main>
+  );
+}
+
+function PlannerFallback() {
+  return (
+    <main className="flex min-h-[calc(100svh-72px)] items-center justify-center bg-[#fffaf2] px-4 text-[#252525] sm:min-h-[calc(100svh-76px)]">
+      <div className="rounded-3xl border border-black/[0.06] bg-white px-6 py-8 text-center shadow-sm">
+        <div className="text-3xl">☀</div>
+        <p className="mt-3 text-sm font-bold text-neutral-600">
+          Բեռնվում է Planner-ը...
+        </p>
+      </div>
+    </main>
+  );
+}
+
+export default function PlannerPage() {
+  return (
+    <Suspense fallback={<PlannerFallback />}>
+      <PlannerContent />
+    </Suspense>
   );
 }

@@ -1,8 +1,10 @@
+
 "use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { specialists } from "@/lib/specialists";
 
 type Profile = {
   id: string;
@@ -25,6 +27,17 @@ type EventItem = {
   updated_at: string | null;
   services: string[] | null;
   style: string | null;
+};
+
+type BookingItem = {
+  id: string;
+  specialist_id: string;
+  booking_date: string;
+  status: "pending" | "confirmed" | "cancelled";
+  notes: string | null;
+  customer_name: string | null;
+  customer_phone: string | null;
+  created_at: string;
 };
 
 const eventNames: Record<string, string> = {
@@ -61,6 +74,18 @@ const serviceNames: Record<string, string> = {
   effects: "Հատուկ էֆեկտներ",
 };
 
+const bookingStatusNames: Record<BookingItem["status"], string> = {
+  pending: "Սպասման մեջ",
+  confirmed: "Հաստատված",
+  cancelled: "Չեղարկված",
+};
+
+const bookingStatusStyles: Record<BookingItem["status"], string> = {
+  pending: "bg-amber-50 text-amber-700 border-amber-200",
+  confirmed: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  cancelled: "bg-red-50 text-red-700 border-red-200",
+};
+
 type FilterType =
   | "all"
   | "draft"
@@ -79,6 +104,31 @@ const statusStyles: Record<string, string> = {
   cancelled: "bg-red-50 text-red-700 border-red-200",
 };
 
+const armenianWeekdays = [
+  "կիրակի",
+  "երկուշաբթի",
+  "երեքշաբթի",
+  "չորեքշաբթի",
+  "հինգշաբթի",
+  "ուրբաթ",
+  "շաբաթ",
+];
+
+const armenianMonths = [
+  "հունվարի",
+  "փետրվարի",
+  "մարտի",
+  "ապրիլի",
+  "մայիսի",
+  "հունիսի",
+  "հուլիսի",
+  "օգոստոսի",
+  "սեպտեմբերի",
+  "հոկտեմբերի",
+  "նոյեմբերի",
+  "դեկտեմբերի",
+];
+
 function formatDate(date: string | null) {
   if (!date) return "Ամսաթիվը նշված չէ";
 
@@ -96,6 +146,23 @@ function formatShortDate(date: string | null) {
     day: "numeric",
     month: "short",
   }).format(new Date(`${date}T12:00:00`));
+}
+
+function formatBookingDate(date: string | null) {
+  if (!date) return "Ամսաթիվը նշված չէ";
+
+  const parsedDate = new Date(`${date}T12:00:00`);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return "Ամսաթիվը նշված չէ";
+  }
+
+  const weekday = armenianWeekdays[parsedDate.getDay()];
+  const day = parsedDate.getDate();
+  const month = armenianMonths[parsedDate.getMonth()];
+  const year = parsedDate.getFullYear();
+
+  return `${weekday}, ${month} ${day}, ${year}`;
 }
 
 function formatBudget(budget: number | null) {
@@ -144,6 +211,27 @@ function isFutureOrToday(date: string | null) {
   return eventDate >= today;
 }
 
+function getSpecialistName(specialistId: string) {
+  return (
+    specialists.find((specialist) => specialist.id === specialistId)?.name ??
+    "Մասնագետ"
+  );
+}
+
+function getSpecialistService(specialistId: string) {
+  return (
+    specialists.find((specialist) => specialist.id === specialistId)?.service ??
+    "Ծառայություն"
+  );
+}
+
+function getSpecialistEmoji(specialistId: string) {
+  return (
+    specialists.find((specialist) => specialist.id === specialistId)?.emoji ??
+    "✨"
+  );
+}
+
 function StatCard({
   icon,
   label,
@@ -160,6 +248,7 @@ function StatCard({
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-semibold text-neutral-500">{label}</p>
+
           <p className="mt-2 text-3xl font-black tracking-[-0.05em] text-[#1f1f1f]">
             {value}
           </p>
@@ -194,6 +283,7 @@ function InfoRow({
 
       <div className="min-w-0">
         <p className="text-xs font-semibold text-neutral-400">{label}</p>
+
         <p className="mt-1 truncate text-sm font-bold text-neutral-800">
           {value}
         </p>
@@ -228,8 +318,10 @@ function LoadingSkeleton() {
 export default function ProfilePage() {
   const [userEmail, setUserEmail] = useState("");
   const [userId, setUserId] = useState("");
+
   const [profile, setProfile] = useState<Profile | null>(null);
   const [events, setEvents] = useState<EventItem[]>([]);
+  const [bookings, setBookings] = useState<BookingItem[]>([]);
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -272,6 +364,7 @@ export default function ProfilePage() {
       const [
         { data: profileData, error: profileError },
         { data: eventsData, error: eventsError },
+        { data: bookingsData, error: bookingsError },
       ] = await Promise.all([
         supabase
           .from("profiles")
@@ -286,15 +379,31 @@ export default function ProfilePage() {
           )
           .eq("user_id", user.id)
           .order("created_at", { ascending: false }),
+
+        supabase
+          .from("bookings")
+          .select(
+            "id, specialist_id, booking_date, status, notes, customer_name, customer_phone, created_at"
+          )
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false }),
       ]);
 
       if (profileError) throw new Error(profileError.message);
+
       if (eventsError) throw new Error(eventsError.message);
 
+      if (bookingsError) throw new Error(bookingsError.message);
+
       setProfile(profileData);
+
       setFullName(profileData?.full_name ?? "");
+
       setPhone(profileData?.phone ?? "");
+
       setEvents((eventsData as EventItem[]) ?? []);
+
+      setBookings((bookingsData as BookingItem[]) ?? []);
     } catch (loadError) {
       setError(
         loadError instanceof Error
@@ -499,6 +608,7 @@ export default function ProfilePage() {
         {/* HERO */}
         <section className="relative overflow-hidden rounded-[32px] bg-[#1f1f1f] p-6 text-white shadow-[0_30px_80px_rgba(31,31,31,.18)] sm:p-8 lg:p-10">
           <div className="pointer-events-none absolute -right-20 -top-28 h-72 w-72 rounded-full bg-orange-400/20 blur-3xl" />
+
           <div className="pointer-events-none absolute bottom-[-140px] left-[35%] h-80 w-80 rounded-full bg-yellow-300/10 blur-3xl" />
 
           <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
@@ -545,6 +655,7 @@ export default function ProfilePage() {
               <p className="text-xs font-semibold uppercase tracking-wider text-white/35">
                 Միջոցառումներ
               </p>
+
               <p className="mt-1 text-lg font-black">
                 {statistics.total}
               </p>
@@ -554,6 +665,7 @@ export default function ProfilePage() {
               <p className="text-xs font-semibold uppercase tracking-wider text-white/35">
                 Հաստատված
               </p>
+
               <p className="mt-1 text-lg font-black text-emerald-300">
                 {statistics.confirmed}
               </p>
@@ -563,6 +675,7 @@ export default function ProfilePage() {
               <p className="text-xs font-semibold uppercase tracking-wider text-white/35">
                 Ավարտված
               </p>
+
               <p className="mt-1 text-lg font-black text-blue-300">
                 {statistics.completed}
               </p>
@@ -622,6 +735,7 @@ export default function ProfilePage() {
                 <p className="text-sm font-bold text-orange-500">
                   Մոտակա միջոցառում
                 </p>
+
                 <h2 className="mt-1 text-2xl font-black tracking-[-0.04em]">
                   Ձեր հաջորդ մեծ օրը
                 </h2>
@@ -680,7 +794,10 @@ export default function ProfilePage() {
         {/* QUICK ACTIONS */}
         <section className="mt-8">
           <div className="mb-4">
-            <p className="text-sm font-bold text-orange-500">Արագ գործողություններ</p>
+            <p className="text-sm font-bold text-orange-500">
+              Արագ գործողություններ
+            </p>
+
             <h2 className="mt-1 text-2xl font-black tracking-[-0.04em]">
               Կառավարեք ձեր Արևը
             </h2>
@@ -694,7 +811,9 @@ export default function ProfilePage() {
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-xl transition group-hover:scale-110">
                 ✨
               </div>
+
               <h3 className="mt-5 font-black">Ստեղծել միջոցառում</h3>
+
               <p className="mt-2 text-sm leading-6 text-neutral-500">
                 Սկսեք նոր միջոցառման պլանավորումը։
               </p>
@@ -707,7 +826,9 @@ export default function ProfilePage() {
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-xl transition group-hover:scale-110">
                 📋
               </div>
+
               <h3 className="mt-5 font-black">Իմ միջոցառումները</h3>
+
               <p className="mt-2 text-sm leading-6 text-neutral-500">
                 Դիտեք և կառավարեք ձեր նախագծերը։
               </p>
@@ -720,11 +841,135 @@ export default function ProfilePage() {
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-xl transition group-hover:scale-110">
                 ⚙️
               </div>
+
               <h3 className="mt-5 font-black">Անձնական տվյալներ</h3>
+
               <p className="mt-2 text-sm leading-6 text-neutral-500">
                 Թարմացրեք ձեր կոնտակտային տվյալները։
               </p>
             </a>
+          </div>
+        </section>
+
+        {/* BOOKINGS */}
+        <section id="bookings" className="mt-12 scroll-mt-28">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-bold text-orange-500">
+                Մասնագետների ամրագրումներ
+              </p>
+
+              <h2 className="mt-1 text-3xl font-black tracking-[-0.05em]">
+                Իմ ամրագրումները
+              </h2>
+
+              <p className="mt-2 text-sm leading-6 text-neutral-500">
+                Այստեղ կարող եք տեսնել ձեր ուղարկած բոլոր ամրագրման հայտերը։
+              </p>
+            </div>
+
+            <Link
+              href="/specialists"
+              className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#1f1f1f] px-5 text-sm font-black text-white transition hover:bg-orange-500"
+            >
+              Գտնել մասնագետ →
+            </Link>
+          </div>
+
+          <div className="mt-6 space-y-4">
+            {bookings.length === 0 ? (
+              <div className="rounded-[32px] border border-dashed border-black/10 bg-white px-6 py-16 text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-50 text-2xl">
+                  📅
+                </div>
+
+                <h3 className="mt-5 text-xl font-black">
+                  Դեռ ամրագրումներ չունեք
+                </h3>
+
+                <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-neutral-500">
+                  Գտեք ձեզ համապատասխան մասնագետ, ընտրեք ազատ օրը և ուղարկեք
+                  ամրագրման հայտ։
+                </p>
+
+                <Link
+                  href="/specialists"
+                  className="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-orange-500 px-6 text-sm font-black text-white transition hover:bg-orange-600"
+                >
+                  Դիտել մասնագետներին →
+                </Link>
+              </div>
+            ) : (
+              bookings.map((booking) => {
+                const bookingStatus = booking.status;
+
+                return (
+                  <article
+                    key={booking.id}
+                    className="group rounded-[30px] border border-black/[0.06] bg-white p-5 shadow-[0_14px_45px_rgba(31,31,31,.05)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_55px_rgba(31,31,31,.09)] sm:p-6"
+                  >
+                    <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                      <div className="flex min-w-0 gap-4">
+                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 text-2xl">
+                          {getSpecialistEmoji(booking.specialist_id)}
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="text-lg font-black text-[#1f1f1f] sm:text-xl">
+                              {getSpecialistName(booking.specialist_id)}
+                            </h3>
+
+                            <span
+                              className={`rounded-full border px-2.5 py-1 text-[10px] font-black ${
+                                bookingStatusStyles[bookingStatus]
+                              }`}
+                            >
+                              {bookingStatusNames[bookingStatus]}
+                            </span>
+                          </div>
+
+                          <p className="mt-1 text-sm font-semibold text-orange-500">
+                            {getSpecialistService(booking.specialist_id)}
+                          </p>
+
+                          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-neutral-500">
+                            <span>
+                              📅 {formatBookingDate(booking.booking_date)}
+                            </span>
+
+                            <span>
+                              📝 Հայտ #{booking.id.slice(0, 8)}
+                            </span>
+                          </div>
+
+                          {booking.notes && (
+                            <div className="mt-4 rounded-2xl bg-neutral-50 p-4">
+                              <p className="text-xs font-bold text-neutral-400">
+                                Ձեր նշումը
+                              </p>
+
+                              <p className="mt-1 text-sm leading-6 text-neutral-600">
+                                {booking.notes}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="shrink-0">
+                        <Link
+                          href={`/specialists/${booking.specialist_id}`}
+                          className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-black/10 bg-white px-5 text-sm font-black text-neutral-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 sm:w-auto"
+                        >
+                          Դիտել մասնագետին →
+                        </Link>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })
+            )}
           </div>
         </section>
 
@@ -1058,6 +1303,12 @@ export default function ProfilePage() {
                 icon="📋"
                 label="Միջոցառումների քանակ"
                 value={`${events.length}`}
+              />
+
+              <InfoRow
+                icon="📅"
+                label="Ամրագրումների քանակ"
+                value={`${bookings.length}`}
               />
             </div>
 
