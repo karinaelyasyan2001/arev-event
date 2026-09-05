@@ -7,7 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: [
         "/profile/",
-        "/planner/",
         "/login/",
         "/register/",
         "/forgot-password/",
