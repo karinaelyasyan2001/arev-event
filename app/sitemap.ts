@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
+import { specialists } from "@/lib/specialists";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://arev-event.am";
 
-  return [
+  const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -40,17 +41,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
-    {
-      url: `${baseUrl}/login`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/register`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
   ];
+
+  const specialistPages: MetadataRoute.Sitemap = specialists.map(
+    (specialist) => ({
+      url: `${baseUrl}/specialists/${specialist.id}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    })
+  );
+
+  return [...staticPages, ...specialistPages];
 }
